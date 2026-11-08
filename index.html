@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>반도체·수주·컨센서스</title>
+  <style>
+    /* 색상표: 한곳에 모아 두면 나중에 바꾸기 쉽습니다 */
+    :root {
+      --green: #03c75a;        /* 포인트 색 */
+      --green-light: #e8f9ef;  /* 키워드 꼬리표 배경 */
+      --bg: #f5f6f8;           /* 페이지 배경 */
+      --text: #1e1e23;         /* 본문 글자 */
+      --sub: #505055;          /* 요약 글자 */
+      --muted: #8c8c91;        /* 날짜 등 흐린 글자 */
+      --line: #e5e5ea;         /* 테두리 */
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; background: var(--bg); color: var(--text);
+      font-family: "Apple SD Gothic Neo", "Malgun Gothic", "맑은 고딕", sans-serif;
+      font-size: 16px; line-height: 1.7; word-break: keep-all;   /* keep-all: 한글 단어 중간에서 줄이 안 끊기게 */
+    }
+
+    /* 맨 위 초록 머리 영역 */
+    header { background: var(--green); color: #fff; }
+    .header-inner { max-width: 720px; margin: 0 auto; padding: 28px 20px 24px; }
+    header .label { font-size: 13px; font-weight: 700; opacity: .85; letter-spacing: .5px; }
+    header h1 { margin: 4px 0 6px; font-size: 26px; font-weight: 800; }
+    header .collected { margin: 0; font-size: 14px; opacity: .9; }
+
+    main { max-width: 720px; margin: 0 auto; padding: 20px 20px 8px; }
+
+    /* 기사 카드 */
+    .card {
+      background: #fff; border: 1px solid var(--line); border-radius: 12px;
+      padding: 22px 24px; margin-bottom: 14px;
+    }
+    .card-top { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; font-size: 13px; color: var(--muted); }
+    .source { color: var(--text); font-weight: 700; }
+    .tags { margin-left: auto; display: flex; gap: 4px; }
+    .tag { background: var(--green-light); color: #00a94f; font-weight: 700; font-size: 12px; padding: 2px 8px; border-radius: 10px; }
+    .tag-latest { background: #f0f0f3; color: var(--muted); }
+
+    .card h2 { margin: 10px 0 12px; font-size: 19px; line-height: 1.45; font-weight: 700; }
+    .card h2 a { color: var(--text); text-decoration: none; }
+    .card h2 a:hover { text-decoration: underline; }
+
+    /* 세 줄 요약: 왼쪽에 초록 세로줄 */
+    .summary {
+      list-style: none; margin: 0 0 14px; padding: 12px 16px;
+      background: #fafafb; border-left: 3px solid var(--green); border-radius: 0 8px 8px 0;
+      color: var(--sub); font-size: 15px;
+    }
+    .summary li { position: relative; padding-left: 14px; }
+    .summary li + li { margin-top: 4px; }
+    .summary li::before { content: ""; position: absolute; left: 0; top: .72em; width: 5px; height: 5px; border-radius: 50%; background: var(--green); }
+
+    .more { font-size: 14px; font-weight: 700; color: var(--green); text-decoration: none; }
+    .more:hover { text-decoration: underline; }
+
+    .error { margin: 0 0 14px; padding: 10px 14px; background: #fff7ed; color: #b45309; border-radius: 8px; font-size: 14px; }
+    .empty { text-align: center; }
+
+    footer { max-width: 720px; margin: 0 auto; padding: 8px 20px 40px; text-align: center; color: var(--muted); font-size: 13px; }
+
+    /* 휴대폰처럼 좁은 화면에서는 여백과 글자를 조금 줄입니다 */
+    @media (max-width: 480px) {
+      .card { padding: 18px; }
+      .card h2 { font-size: 17px; }
+      header h1 { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <div class="label">오늘의 뉴스 브리핑</div>
+      <h1>반도체·수주·컨센서스</h1>
+      <p class="collected">수집 시각 2026-11-08 18:19</p>
+    </div>
+  </header>
+  <main>
+      <p class="error empty">가져온 기사가 없습니다. 인터넷 연결이나 RSS 주소를 확인해 주세요.</p>
+  </main>
+  <footer>⚠ AI 요약은 틀릴 수 있음 · 정확한 내용은 원문을 확인하세요</footer>
+</body>
+</html>
