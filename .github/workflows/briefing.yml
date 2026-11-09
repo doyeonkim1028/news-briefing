@@ -1,0 +1,66 @@
+# ------------------------------------------------------------
+# 매일 아침 briefing.py 를 실행해서
+#   1) news.json / index.html 을 새로 만들고 저장소에 커밋한 뒤
+#   2) index.html 을 GitHub Pages 로 배포합니다.
+#
+# 준비물 (한 번만):
+#   - Settings → Secrets and variables → Actions → New repository secret
+#       이름: GEMINI_API_KEY   값: Gemini API 키
+#   - Settings → Pages → Build and deployment → Source: "GitHub Actions"
+# ------------------------------------------------------------
+name: News briefing
+
+on:
+  schedule:
+    # cron 은 세계 표준시(UTC) 기준입니다. 22:00 UTC = 한국 시간 오전 7시
+    - cron: "0 22 * * *"
+  workflow_dispatch:        # Actions 탭에서 "Run workflow" 버튼으로 직접 실행
+
+permissions:
+  contents: write           # 결과 파일을 커밋하기 위해
+  pages: write              # GitHub Pages 배포
+  id-token: write           # GitHub Pages 배포
+
+concurrency:
+  group: briefing
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Run briefing
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python briefing.py
+
+      - name: Commit results
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add news.json index.html
+          git diff --cached --quiet || git commit -m "briefing: $(TZ=Asia/Seoul date '+%Y-%m-%d %H:%M')"
+          git push
+
+      - name: Prepare site
+        run: mkdir _site && cp index.html news.json _site/
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

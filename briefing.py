@@ -15,7 +15,8 @@
 # ------------------------------------------------------------
 
 import json
-import re                          # 정규식: 글자 속에서 특정 모양(예: HTML 태그)을 찾는 기능
+import os                          # 환경 변수 읽기 (GitHub Actions 에서 API 키를 받을 때)
+import re                        # 정규식: 글자 속에서 특정 모양(예: HTML 태그)을 찾는 기능
 import html                        # HTML 특수 기호 처리 (&amp; ↔ & 등)
 import urllib.request
 import urllib.error                # 인터넷 요청이 실패했을 때의 오류 종류
@@ -401,8 +402,9 @@ def save_results(articles, page_title, collected_at):
 # ============================================================
 
 def main():
-    # 수집 시각: 지금 컴퓨터 시간을 "2026-11-08 17:40" 모양으로
-    collected_at = datetime.now().strftime("%Y-%m-%d %H:%M")
+    # 수집 시각: 지금 한국 시간을 "2026-11-08 17:40" 모양으로
+    # (GitHub Actions 서버는 세계 표준시(UTC)라서, 한국 시간(UTC+9)으로 직접 맞춰 줍니다)
+    collected_at = datetime.now(timezone(timedelta(hours=9))).strftime("%Y-%m-%d %H:%M")
     feeds, keywords = load_settings()
 
     # 페이지 제목은 키워드를 '·' 로 이어서 만듭니다. → "반도체·수주·컨센서스"
@@ -416,7 +418,8 @@ def main():
         print(f"[기사 수집 실패] {error}")
         articles = []
 
-    api_key = load_env().get("GEMINI_API_KEY", "")
+    # 키는 환경 변수(GitHub Actions 의 Secrets)를 먼저 보고, 없으면 .env 파일에서 찾습니다.
+    api_key = os.environ.get("GEMINI_API_KEY") or load_env().get("GEMINI_API_KEY", "")
     add_summaries(articles, api_key)
 
     save_results(articles, page_title, collected_at)
