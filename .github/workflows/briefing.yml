@@ -1,5 +1,5 @@
 # ------------------------------------------------------------
-# 매일 아침 briefing.py 를 실행해서
+# Actions 탭에서 직접 실행하면 briefing.py 를 실행해서
 #   1) news.json / index.html 을 새로 만들고 저장소에 커밋한 뒤
 #   2) index.html 을 GitHub Pages 로 배포합니다.
 #
@@ -11,9 +11,10 @@
 name: News briefing
 
 on:
-  schedule:
-    # cron 은 세계 표준시(UTC) 기준입니다. 22:00 UTC = 한국 시간 오전 7시
-    - cron: "0 22 * * *"
+  # 매일 자동 실행(예약)은 꺼 두었습니다. 다시 켜려면 아래 세 줄의 # 을 지우세요.
+  # (cron 은 세계 표준시(UTC) 기준입니다. 22:00 UTC = 한국 시간 오전 7시)
+  # schedule:
+  #   - cron: "0 22 * * *"
   workflow_dispatch:        # Actions 탭에서 "Run workflow" 버튼으로 직접 실행
 
 permissions:
